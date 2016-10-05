@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">LabCRP</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    
+	<string name="your_choice">your choice</string>
+	<string name="coms_choice">com\'s choice</string>
+	
+	<string name="win">win:</string>
+	<string name="lose">lose:</string>
+	<string name="tie">tie:</string>
+	
+	<string name="winResult">YOU WIN!!</string>
+	<string name="loseResult">YOU LOSE!!</string>
+	<string name="tieResult">TIE!!</string>
+</resources>

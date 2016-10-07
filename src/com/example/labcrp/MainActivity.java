@@ -1,6 +1,7 @@
 package com.example.labcrp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -11,18 +12,17 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
-	ImageView paper , scissor , stone , urA , comA;
-	TextView txv , winTimes , loseTimes , tieTimes ;
+	ImageView paper , scissor , stone;
+	TextView  winTimes , loseTimes , tieTimes ;
 	int w , l , t ;
-	
+	Bundle bun=new Bundle();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+		w = l = t = 0 ;
 		findView();
 		onClk();
-		w = l = t = 0 ;
 	}
 
 	@Override
@@ -48,9 +48,9 @@ public class MainActivity extends Activity {
 		paper = (ImageView)findViewById(R.id.paper);
 		scissor = (ImageView)findViewById(R.id.scissor);
 		stone = (ImageView)findViewById(R.id.stone);
-		urA = (ImageView)findViewById(R.id.urA);
-		comA = (ImageView)findViewById(R.id.comA);
-		txv = (TextView)findViewById(R.id.txv_battleResult);
+		//urA = (ImageView)findViewById(R.id.urA);
+		//comA = (ImageView)findViewById(R.id.comA);
+		//txv = (TextView)findViewById(R.id.txv_battleResult);
 		winTimes = (TextView)findViewById(R.id.winTimes);
 		loseTimes = (TextView)findViewById(R.id.loseTimes);
 		tieTimes = (TextView)findViewById(R.id.tieTimes);
@@ -58,55 +58,57 @@ public class MainActivity extends Activity {
 	}
 	
 	public void onClk(){
+		//Intent intent= new Intent();
+		//intent.setClass(MainActivity.this, resultActivity.class);
+		//intent.putExtras(bun);
+		//startActivityForResult(intent,1);
 		paper.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
-				urA.setImageResource(R.drawable.a3);
-				comDecide(1);
+				toNext(1);
+				//urA.setImageResource(R.drawable.a3);
+				//comDecide(1);
 			}
 		});
 		scissor.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
-				urA.setImageResource(R.drawable.a1);
-				comDecide(2);
+				toNext(2);
+				//urA.setImageResource(R.drawable.a1);
+				//comDecide(2);
 			}
 		});
 		stone.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
-				urA.setImageResource(R.drawable.a2);
-				comDecide(3);
+				toNext(3);
+				//urA.setImageResource(R.drawable.a2);
+				//comDecide(3);
 			}
 		});
 	}
 	
-	public void comDecide(int urcmp){
-		int i=(int)(Math.random()*3);
-		switch(i){
-		case 0:
-			comA.setImageResource(R.drawable.a3);
-			compare(urcmp, 1);
-			break;
-		case 1:
-			comA.setImageResource(R.drawable.a1);
-			compare(urcmp, 2);
-			break;
-		case 2:
-			comA.setImageResource(R.drawable.a2);
-			compare(urcmp, 3);
-		}
+	void toNext(int i){
+		Intent intent= new Intent(this , resultActivity.class);
+		bun.putInt("U", i);
+		intent.putExtras(bun);
+		startActivityForResult(intent,0);
 	}
 	
-	public void compare(int urcmp, int comcmp){
-		if(urcmp == comcmp){
-			txv.setText(R.string.tieResult);
-			tieTimes.setText(String.valueOf(++t));
-		}
-		else if(urcmp == (comcmp+1) || (urcmp==1 && comcmp==3) ){
-			txv.setText(R.string.winResult);
-			winTimes.setText(String.valueOf(++w));
-		}
-		else{
-			txv.setText(R.string.loseResult);
-			loseTimes.setText(String.valueOf(++l));
+	protected void onActivityResult(int req, int res, Intent data){
+		super.onActivityResult(req, res, data);
+		switch(res){
+		case 1 :
+			int getData= data.getIntExtra("RE", -1);
+			if(getData!=-1){
+				switch(getData){
+				case 1:
+					tieTimes.setText(String.valueOf(++t));
+					break;
+				case 2:
+					winTimes.setText(String.valueOf(++w));
+					break;
+				case 3:
+					loseTimes.setText(String.valueOf(++l));
+				}
+			}
 		}
 	}
 }
